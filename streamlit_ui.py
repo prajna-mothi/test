@@ -27,8 +27,14 @@ from website_expert import website_expert, WebsiteDependents
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
+from utils import access_secret_version
 
-openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+# Retrieve the API key from Google Secret Manager
+api_key = access_secret_version("open_ai_auth_token", '4')
+openai_client = AsyncOpenAI(api_key=api_key)
+
 supabase: Client = Client(
     os.getenv("SUPABASE_URL"),
     os.getenv("SUPABASE_SERVICE_KEY")
