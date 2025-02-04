@@ -14,9 +14,16 @@ from supabase import Client
 from typing import List
 
 load_dotenv()
+from utils import access_secret_version
+
+
+
+# Retrieve the API key from Google Secret Manager
+api_key = access_secret_version("open_ai_auth_token", '4')
+openai_client = AsyncOpenAI(api_key=api_key)
 
 llm = os.getenv('LLM_MODEL', 'gpt-4o-mini')
-model = OpenAIModel(llm)
+model = OpenAIModel(llm, api_key=api_key)
 
 
 @dataclass
